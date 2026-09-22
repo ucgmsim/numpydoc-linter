@@ -15,10 +15,10 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
 
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.rules.base import BaseFileRule, Context, registry
-from numpydoc_linter.rules.messages import render
-from numpydoc_linter.source import ALL_CODES, Suppression
+from npdlint.diagnostics import Diagnostic
+from npdlint.rules.base import BaseFileRule, Context, registry
+from npdlint.rules.messages import render
+from npdlint.source import ALL_CODES, Suppression
 
 
 def judgeable_codes(suppression: Suppression) -> tuple[str, ...]:
@@ -37,7 +37,7 @@ def judgeable_codes(suppression: Suppression) -> tuple[str, ...]:
     Returns
     -------
     tuple of str
-        Codes to judge, possibly including :data:`~numpydoc_linter.source.ALL_CODES`.
+        Codes to judge, possibly including :data:`~npdlint.source.ALL_CODES`.
     """
     out: list[str] = []
     for code in sorted(suppression.codes):

@@ -1,6 +1,6 @@
 """Parsed view of a numpydoc docstring.
 
-This wraps the vendored :class:`~numpydoc_linter._vendor.docscrape.NumpyDocString`
+This wraps the vendored :class:`~npdlint._vendor.docscrape.NumpyDocString`
 and re-exposes the derived quantities that numpydoc's own ``Validator`` computes,
 so that ported rules can be written against the same vocabulary.
 """
@@ -12,7 +12,7 @@ import re
 import warnings
 from functools import cached_property
 
-from numpydoc_linter._vendor.docscrape import NumpyDocString
+from npdlint._vendor.docscrape import NumpyDocString
 
 #: Sections numpydoc recognises, in their canonical order.
 ALLOWED_SECTIONS = (

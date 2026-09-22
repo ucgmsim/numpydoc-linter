@@ -16,10 +16,10 @@ from pathlib import Path
 
 import pytest
 
-from numpydoc_linter.config import _settings_from_table
-from numpydoc_linter.rules.base import registry
-from numpydoc_linter.runner import lint_source
-from numpydoc_linter.source import read_source
+from npdlint.config import _settings_from_table
+from npdlint.rules.base import registry
+from npdlint.runner import lint_source
+from npdlint.source import read_source
 
 FIXTURES = Path(__file__).parent / "fixtures"
 EXPECT_RE = re.compile(r"#\s*expect:\s*([A-Z0-9,\s]+)")

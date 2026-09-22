@@ -8,18 +8,18 @@ from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from numpydoc_linter import plugins
-from numpydoc_linter.config import Settings
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.rules.base import Context, registry
-from numpydoc_linter.scope import Resolver
-from numpydoc_linter.source import (
+from npdlint import plugins
+from npdlint.config import Settings
+from npdlint.diagnostics import Diagnostic
+from npdlint.rules.base import Context, registry
+from npdlint.scope import Resolver
+from npdlint.source import (
     SourceError,
     SourceFile,
     SuppressionUsage,
     read_source,
 )
-from numpydoc_linter.targets import Target, collect_targets
+from npdlint.targets import Target, collect_targets
 
 #: Code reported for a file that could not be read or parsed.
 SYNTAX_ERROR_CODE = "E902"

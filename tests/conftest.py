@@ -7,11 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from numpydoc_linter.config import Settings, _settings_from_table
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.runner import lint_source
-from numpydoc_linter.source import read_source
-from numpydoc_linter.targets import collect_targets
+from npdlint.config import Settings, _settings_from_table
+from npdlint.diagnostics import Diagnostic
+from npdlint.runner import lint_source
+from npdlint.source import read_source
+from npdlint.targets import collect_targets
 
 FIXTURES = Path(__file__).parent / "fixtures"
 

@@ -11,8 +11,8 @@ from pathlib import Path
 
 import pytest
 
-from numpydoc_linter.config import _settings_from_table
-from numpydoc_linter.runner import lint_paths
+from npdlint.config import _settings_from_table
+from npdlint.runner import lint_paths
 
 pytestmark = pytest.mark.performance
 

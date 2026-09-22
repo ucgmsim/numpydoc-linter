@@ -8,13 +8,13 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from numpydoc_linter import __version__, output, plugins, selection
-from numpydoc_linter.config import ConfigError, Settings, load_settings
-from numpydoc_linter.discovery import iter_python_files
-from numpydoc_linter.rules.base import registry
-from numpydoc_linter.runner import explain_target, lint_paths
-from numpydoc_linter.source import SourceError, read_source
-from numpydoc_linter.targets import collect_targets
+from npdlint import __version__, output, plugins, selection
+from npdlint.config import ConfigError, Settings, load_settings
+from npdlint.discovery import iter_python_files
+from npdlint.rules.base import registry
+from npdlint.runner import explain_target, lint_paths
+from npdlint.source import SourceError, read_source
+from npdlint.targets import collect_targets
 
 #: Exit code when the run found violations.
 EXIT_VIOLATIONS = 1
@@ -168,6 +168,19 @@ def _add_check_arguments(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def _print_notices(settings: Settings) -> None:
+    """
+    Report anything the configuration itself needs saying about.
+
+    Parameters
+    ----------
+    settings : Settings
+        The loaded settings.
+    """
+    for notice in settings.notices:
+        print(f"warning: {notice}", file=sys.stderr)
+
+
 def _apply_overrides(settings: Settings, args: argparse.Namespace) -> Settings:
     """
     Layer command-line options over the loaded settings.
@@ -220,6 +233,7 @@ def command_check(args: argparse.Namespace) -> int:
         The process exit code.
     """
     settings = load_settings(args.config)
+    _print_notices(settings)
     plugins.load_all(settings.plugins, settings.root)
     settings = _apply_overrides(settings, args)
 
@@ -449,6 +463,7 @@ def command_explain(args: argparse.Namespace) -> int:
         The process exit code.
     """
     settings = load_settings(args.config)
+    _print_notices(settings)
     plugins.load_all(settings.plugins, settings.root)
 
     location = args.location

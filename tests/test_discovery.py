@@ -6,7 +6,7 @@ from pathlib import Path
 
 from tests.conftest import settings_from
 
-from numpydoc_linter.discovery import discover, iter_python_files
+from npdlint.discovery import discover, iter_python_files
 
 
 def build(root: Path, files: dict[str, str]) -> None:

@@ -51,10 +51,10 @@ from pathlib import Path
 
 import pytest
 
-from numpydoc_linter.config import _settings_from_table
-from numpydoc_linter.runner import lint_source
-from numpydoc_linter.source import read_source
-from numpydoc_linter.targets import collect_targets
+from npdlint.config import _settings_from_table
+from npdlint.runner import lint_source
+from npdlint.source import read_source
+from npdlint.targets import collect_targets
 
 numpydoc = pytest.importorskip("numpydoc", reason="parity needs numpydoc installed")
 
@@ -78,7 +78,7 @@ NUMPYDOC_CONFIG = {
 
 def _corpus() -> list[Path]:
     files = sorted(Path(numpydoc.__file__).parent.rglob("*.py"))
-    files += sorted((REPO / "src" / "numpydoc_linter").rglob("*.py"))
+    files += sorted((REPO / "src" / "npdlint").rglob("*.py"))
     files += sorted((REPO / "tests" / "fixtures").glob("*.py"))
     return files
 

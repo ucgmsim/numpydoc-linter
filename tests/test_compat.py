@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from numpydoc_linter import compat
-from numpydoc_linter.config import ConfigError, load_settings
-from numpydoc_linter.runner import lint_paths
+from npdlint import compat
+from npdlint.config import ConfigError, load_settings
+from npdlint.runner import lint_paths
 
 SAMPLE = '''"""Module."""
 
@@ -50,7 +50,7 @@ def project(tmp_path, pyproject: str, files: dict[str, str] | None = None):
 
 def run(tmp_path, settings):
     """Lint every Python file in the project."""
-    from numpydoc_linter.discovery import iter_python_files
+    from npdlint.discovery import iter_python_files
 
     files = iter_python_files([], settings)
     return lint_paths(files, settings, jobs=1)
@@ -242,7 +242,7 @@ def test_native_settings_win_over_legacy_ones(tmp_path):
     settings = project(
         tmp_path,
         "[tool.numpydoc_validation]\nchecks = ['GL08']\n\n"
-        "[tool.numpydoc-linter]\nselect = ['PR01']\n",
+        "[tool.npdlint]\nselect = ['PR01']\n",
     )
     assert settings.select == ("PR01",)
 
@@ -253,7 +253,7 @@ def test_legacy_fills_in_what_the_native_table_omits(tmp_path):
         "[tool.numpydoc_validation]\n"
         "checks = ['GL08']\n"
         "exclude = ['\\.__repr__$']\n\n"
-        "[tool.numpydoc-linter]\ninclude = ['src']\n",
+        "[tool.npdlint]\ninclude = ['src']\n",
     )
     assert settings.select == ("GL08",)
     assert settings.exclude_object_patterns == ("\\.__repr__$",)
@@ -264,14 +264,14 @@ def test_compat_can_be_turned_off(tmp_path):
     settings = project(
         tmp_path,
         "[tool.numpydoc_validation]\nchecks = ['GL08']\n\n"
-        "[tool.numpydoc-linter]\nnumpydoc-compat = false\n",
+        "[tool.npdlint]\nnumpydoc-compat = false\n",
     )
     assert settings.select == ("ALL",)
     assert settings.legacy_config is False
 
 
 def test_no_legacy_table_means_no_compat(tmp_path):
-    settings = project(tmp_path, "[tool.numpydoc-linter]\nselect = ['GL08']\n")
+    settings = project(tmp_path, "[tool.npdlint]\nselect = ['GL08']\n")
     assert settings.legacy_config is False
 
 
@@ -281,11 +281,11 @@ def test_no_legacy_table_means_no_compat(tmp_path):
 def test_the_same_features_are_available_natively(tmp_path):
     settings = project(
         tmp_path,
-        "[tool.numpydoc-linter]\n"
+        "[tool.npdlint]\n"
         "select = ['SS05']\n"
         "exclude-object-patterns = ['\\.__repr__$']\n"
         "exclude-file-patterns = ['^skip/']\n\n"
-        "[tool.numpydoc-linter.overrides]\n"
+        "[tool.npdlint.overrides]\n"
         "SS05 = ['^Processes ']\n",
         files={"sample.py": OVERRIDE_SAMPLE},
     )

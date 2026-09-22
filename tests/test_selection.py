@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from numpydoc_linter import selection
-from numpydoc_linter.rules.base import registry
+from npdlint import selection
+from npdlint.rules.base import registry
 
 KNOWN = ("ES01", "GL08", "PR01", "PR04", "PT01", "RT01", "SA01")
 

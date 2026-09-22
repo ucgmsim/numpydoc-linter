@@ -1,11 +1,11 @@
 """Built-in rules.
 
-Importing this package populates :data:`numpydoc_linter.rules.base.registry`.
+Importing this package populates :data:`npdlint.rules.base.registry`.
 """
 
 from __future__ import annotations
 
-from numpydoc_linter.rules import (  # noqa: F401
+from npdlint.rules import (  # noqa: F401
     general,
     parameters,
     properties,
@@ -14,7 +14,7 @@ from numpydoc_linter.rules import (  # noqa: F401
     summary,
     suppressions,
 )
-from numpydoc_linter.rules.base import (
+from npdlint.rules.base import (
     BaseFileRule,
     BaseRule,
     Context,

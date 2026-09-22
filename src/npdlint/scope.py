@@ -5,9 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from numpydoc_linter import selection
-from numpydoc_linter.config import ScopeBlock, Settings, _regex, _spec
-from numpydoc_linter.targets import Target
+from npdlint import selection
+from npdlint.config import ScopeBlock, Settings, _regex, _spec
+from npdlint.targets import Target
 
 
 @dataclass(slots=True)

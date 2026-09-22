@@ -51,7 +51,7 @@ def test_custom_property_decorator_is_configurable():
     import ast
     from pathlib import Path
 
-    from numpydoc_linter.targets import collect_targets
+    from npdlint.targets import collect_targets
 
     text = """
 class C:

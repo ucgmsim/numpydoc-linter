@@ -3,7 +3,7 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "numpydoc-linter"
+name = "npdlint"
 # The version comes from the git tag, so a release needs no edit here.
 dynamic = ["version"]
 description = "A fast, modular, structurally-aware linter for numpydoc-style docstrings."
@@ -25,7 +25,7 @@ dependencies = ["pathspec>=0.12"]
 dev = ["pytest>=8", "ruff>=0.6", "numpydoc>=1.9"]
 
 [project.scripts]
-npdlint = "numpydoc_linter.cli:main"
+npdlint = "npdlint.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/ucgmsim/numpydoc-linter"
@@ -34,7 +34,7 @@ Homepage = "https://github.com/ucgmsim/numpydoc-linter"
 source = "vcs"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/numpydoc_linter"]
+packages = ["src/npdlint"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -51,16 +51,16 @@ src = ["src", "tests"]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/numpydoc_linter/_vendor/*" = ["ALL"]
+"src/npdlint/_vendor/*" = ["ALL"]
 "tests/fixtures/*" = ["ALL"]
 
 # Dogfooding: this project lints its own docstrings.
-[tool.numpydoc-linter]
-include = ["src/numpydoc_linter"]
-extend-exclude = ["src/numpydoc_linter/_vendor/**"]
+[tool.npdlint]
+include = ["src/npdlint"]
+extend-exclude = ["src/npdlint/_vendor/**"]
 select = ["ALL"]
 ignore = ["ES01", "SA01", "EX01", "GL08"]
 
-[[tool.numpydoc-linter.scope]]
+[[tool.npdlint.scope]]
 match = { private = true }
 skip = true

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from numpydoc_linter.rules.properties import (
+from npdlint.rules.properties import (
     PropertyFormError,
     _normalise_type,
     resolve_form,

@@ -13,10 +13,10 @@ import re
 from collections.abc import Iterable
 from dataclasses import dataclass
 
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.rules.base import BaseRule, Context, registry
-from numpydoc_linter.rules.messages import render
-from numpydoc_linter.targets import Kind, Target
+from npdlint.diagnostics import Diagnostic
+from npdlint.rules.base import BaseRule, Context, registry
+from npdlint.rules.messages import render
+from npdlint.targets import Kind, Target
 
 #: Configuration key selecting the expected shape of a property docstring.
 OPTION = "property-form"

@@ -7,8 +7,8 @@ import json
 from collections.abc import Iterable
 from pathlib import Path
 
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.rules.base import registry
+from npdlint.diagnostics import Diagnostic
+from npdlint.rules.base import registry
 
 #: Every format ``--output-format`` accepts.
 FORMATS = ("concise", "full", "json", "github", "pylint")

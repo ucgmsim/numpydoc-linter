@@ -8,7 +8,7 @@ object's numpydoc name, ``exclude_files`` holds regular expressions anchored at
 the start of the file path, and ``override_<CODE>`` suppresses one check when a
 pattern is found in the docstring itself.
 
-Where a native ``[tool.numpydoc-linter]`` table is present as well, it is
+Where a native ``[tool.npdlint]`` table is present as well, it is
 layered on top, so a project can migrate one setting at a time.
 """
 

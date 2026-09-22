@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pathspec
 
-from numpydoc_linter.config import Settings, _regex, _spec
+from npdlint.config import Settings, _regex, _spec
 
 #: Extensions treated as Python source.
 PYTHON_SUFFIXES = (".py", ".pyi")

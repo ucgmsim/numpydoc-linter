@@ -4,17 +4,17 @@ from __future__ import annotations
 
 import pytest
 
-from numpydoc_linter import plugins
-from numpydoc_linter.config import _settings_from_table
-from numpydoc_linter.rules.base import Registry, registry
-from numpydoc_linter.runner import lint_source
-from numpydoc_linter.source import read_source
+from npdlint import plugins
+from npdlint.config import _settings_from_table
+from npdlint.rules.base import Registry, registry
+from npdlint.runner import lint_source
+from npdlint.source import read_source
 
 PLUGIN = '''
 """A project-local rule."""
 
-from numpydoc_linter.rules import BaseRule, registry
-from numpydoc_linter.targets import Kind
+from npdlint.rules import BaseRule, registry
+from npdlint.targets import Kind
 
 
 @registry.register
@@ -139,4 +139,4 @@ def test_register_hook_is_called(tmp_path):
     plugins.load_path("hook_plugin.py", tmp_path, local)
     import sys
 
-    assert [local] == sys.modules["_numpydoc_linter_plugin_hook_plugin"].CALLED
+    assert [local] == sys.modules["_npdlint_plugin_hook_plugin"].CALLED

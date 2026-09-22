@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.rules.base import BaseRule, Context, registry
-from numpydoc_linter.rules.messages import render
-from numpydoc_linter.rules.properties import effective_summary
-from numpydoc_linter.targets import CALLABLE_KINDS, Kind, Target
+from npdlint.diagnostics import Diagnostic
+from npdlint.rules.base import BaseRule, Context, registry
+from npdlint.rules.messages import render
+from npdlint.rules.properties import effective_summary
+from npdlint.targets import CALLABLE_KINDS, Kind, Target
 
 _NON_MODULE = frozenset(Kind) - {Kind.MODULE}
 

@@ -93,7 +93,7 @@ MESSAGES: dict[str, str] = {
     ),
     "SA04": 'Missing description for See Also "{reference_name}" reference',
     "EX01": "No examples section found",
-    # -- properties (new in numpydoc-linter) ------------------------------
+    # -- properties (new in npdlint) ------------------------------
     "PT01": "Property docstring does not match the {form} form ({expected})",
     "PT02": (
         'Property documents type "{documented}" but is annotated "{annotated}"'
@@ -102,7 +102,7 @@ MESSAGES: dict[str, str] = {
         'Property docstring has a "{section}" section, which the {form} form '
         "does not use"
     ),
-    # -- suppression comments (new in numpydoc-linter) --------------------
+    # -- suppression comments (new in npdlint) --------------------
     "NQ01": "Unnecessary suppression comment: {detail}",
     "NQ02": "Suppression comment names {detail}",
 }

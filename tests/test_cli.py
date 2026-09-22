@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from numpydoc_linter.cli import main
+from npdlint.cli import main
 
 PROPERTY_SAMPLE = '''"""M."""
 
@@ -43,7 +43,7 @@ def undocumented():
 @pytest.fixture
 def project(tmp_path):
     (tmp_path / "pyproject.toml").write_text(
-        '[tool.numpydoc-linter]\nselect = ["GL08"]\n', encoding="utf-8"
+        '[tool.npdlint]\nselect = ["GL08"]\n', encoding="utf-8"
     )
     (tmp_path / "sample.py").write_text(SAMPLE, encoding="utf-8")
     return tmp_path
@@ -61,7 +61,7 @@ def test_exit_code_on_violations(project, capsys):
 
 def test_exit_code_when_clean(tmp_path, capsys):
     (tmp_path / "pyproject.toml").write_text(
-        '[tool.numpydoc-linter]\nselect = ["GL08"]\n', encoding="utf-8"
+        '[tool.npdlint]\nselect = ["GL08"]\n', encoding="utf-8"
     )
     (tmp_path / "ok.py").write_text('"""Module."""\n', encoding="utf-8")
     config = str(tmp_path / "pyproject.toml")
@@ -171,10 +171,10 @@ def test_rule_command_rejects_unknown(capsys):
 def test_explain_shows_the_resolution(tmp_path, capsys):
     (tmp_path / "pyproject.toml").write_text(
         """
-[tool.numpydoc-linter]
+[tool.npdlint]
 select = ["ALL"]
 
-[[tool.numpydoc-linter.scope]]
+[[tool.npdlint.scope]]
 match = { kind = "property" }
 extend-ignore = ["RT"]
 property-form = "type-line"
@@ -224,3 +224,15 @@ def test_explain_without_a_line_covers_the_whole_file(tmp_path, capsys):
     out = capsys.readouterr().out
     assert "kind       module" in out
     assert "kind       function" in out
+
+
+def test_the_old_tool_table_name_warns_on_stderr(tmp_path, capsys):
+    (tmp_path / "pyproject.toml").write_text(
+        '[tool.numpydoc-linter]\nselect = ["GL08"]\n', encoding="utf-8"
+    )
+    (tmp_path / "sample.py").write_text(SAMPLE, encoding="utf-8")
+    config = str(tmp_path / "pyproject.toml")
+    assert main(["check", str(tmp_path), "--config", config]) == 1
+    captured = capsys.readouterr()
+    assert "GL08" in captured.out
+    assert "[tool.numpydoc-linter] is the old name" in captured.err

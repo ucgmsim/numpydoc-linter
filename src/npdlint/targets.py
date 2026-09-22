@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
 
-from numpydoc_linter.docstring import ParsedDocstring
+from npdlint.docstring import ParsedDocstring
 
 
 class Kind(StrEnum):

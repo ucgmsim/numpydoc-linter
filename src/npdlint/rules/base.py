@@ -6,11 +6,11 @@ from collections.abc import Iterable
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, ClassVar, Protocol, runtime_checkable
 
-from numpydoc_linter.diagnostics import Diagnostic
-from numpydoc_linter.targets import Kind, Target
+from npdlint.diagnostics import Diagnostic
+from npdlint.targets import Kind, Target
 
 if TYPE_CHECKING:  # pragma: no cover
-    from numpydoc_linter.source import SourceFile, SuppressionUsage
+    from npdlint.source import SourceFile, SuppressionUsage
 
 
 @dataclass(slots=True)

@@ -1,5 +1,5 @@
 - id: npdlint
-  name: numpydoc-linter
+  name: npdlint
   description: Lint numpydoc-style docstrings.
   entry: npdlint check
   language: python

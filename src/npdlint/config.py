@@ -12,9 +12,9 @@ from typing import Any
 
 import pathspec
 
-from numpydoc_linter import compat, selection
-from numpydoc_linter.rules import registry
-from numpydoc_linter.targets import (
+from npdlint import compat, selection
+from npdlint.rules import registry
+from npdlint.targets import (
     DEFAULT_DATACLASS_DECORATORS,
     DEFAULT_PROPERTY_DECORATORS,
     KIND_GROUPS,
@@ -23,7 +23,11 @@ from numpydoc_linter.targets import (
 )
 
 #: Section of ``pyproject.toml`` this tool reads.
-TOOL_TABLE = "numpydoc-linter"
+TOOL_TABLE = "npdlint"
+
+#: What that section was called before the tool was renamed. Still read, so
+#: that a project configured against the old name keeps working.
+RENAMED_TOOL_TABLE = "numpydoc-linter"
 
 #: Directories never walked, regardless of configuration.
 DEFAULT_EXCLUDES = (
@@ -456,6 +460,9 @@ class Settings:
         Local plugin paths or dotted module names providing extra rules.
     config_path : pathlib.Path or None
         The file these settings were read from.
+    notices : tuple of str
+        Messages about the configuration itself, for the command line to show
+        once before it reports anything.
     """
 
     root: Path = field(default_factory=Path.cwd)
@@ -480,6 +487,7 @@ class Settings:
     dataclass_decorators: tuple[str, ...] = DEFAULT_DATACLASS_DECORATORS
     plugins: tuple[str, ...] = ()
     config_path: Path | None = None
+    notices: tuple[str, ...] = ()
 
     @property
     def base_options(self) -> dict[str, Any]:
@@ -576,11 +584,52 @@ def load_settings(
     except tomllib.TOMLDecodeError as exc:
         raise ConfigError(f"{config_path}: {exc}") from exc
 
-    table = data.get("tool", {}).get(TOOL_TABLE, {})
+    tool = data.get("tool", {})
+    table, notices = _native_table(tool, config_path)
     project_root = config_path.parent.resolve()
     table, legacy_used = _merge_legacy(table, project_root, config_path)
     settings = _settings_from_table(table, project_root, config_path)
-    return dataclasses.replace(settings, legacy_config=legacy_used)
+    return dataclasses.replace(
+        settings, legacy_config=legacy_used, notices=notices
+    )
+
+
+def _native_table(
+    tool: dict[str, Any], config_path: Path
+) -> tuple[dict[str, Any], tuple[str, ...]]:
+    """
+    Pick the tool's own table, accepting the name it used to have.
+
+    ``[tool.numpydoc-linter]`` is read when ``[tool.npdlint]`` is absent, so
+    renaming the tool does not break a project overnight. Where both are
+    present the current name wins outright rather than merging the two, which
+    would make the effective configuration impossible to read off the file.
+
+    Parameters
+    ----------
+    tool : dict
+        The ``[tool]`` table of ``pyproject.toml``.
+    config_path : pathlib.Path
+        The file it came from, named in any notice.
+
+    Returns
+    -------
+    tuple
+        The table to use, and any notices to show the user.
+    """
+    table = tool.get(TOOL_TABLE)
+    renamed = tool.get(RENAMED_TOOL_TABLE)
+    if renamed is None:
+        return table or {}, ()
+    if table is None:
+        return renamed, (
+            f"{config_path}: [tool.{RENAMED_TOOL_TABLE}] is the old name for "
+            f"[tool.{TOOL_TABLE}] and is still read; rename it to silence this.",
+        )
+    return table, (
+        f"{config_path}: [tool.{RENAMED_TOOL_TABLE}] is ignored because "
+        f"[tool.{TOOL_TABLE}] is also present.",
+    )
 
 
 def _merge_legacy(
@@ -595,7 +644,7 @@ def _merge_legacy(
     Parameters
     ----------
     table : dict
-        The native ``[tool.numpydoc-linter]`` table.
+        The native ``[tool.npdlint]`` table.
     root : pathlib.Path
         Project root.
     config_path : pathlib.Path or None
@@ -650,7 +699,7 @@ def _settings_from_table(
     Parameters
     ----------
     table : dict
-        The ``[tool.numpydoc-linter]`` table.
+        The ``[tool.npdlint]`` table.
     root : pathlib.Path
         Project root.
     config_path : pathlib.Path or None

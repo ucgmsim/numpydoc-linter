@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from tests.conftest import codes_at
 
-from numpydoc_linter.source import ALL_CODES, extract_noqa
+from npdlint.source import ALL_CODES, extract_noqa
 
 
 @pytest.mark.parametrize(

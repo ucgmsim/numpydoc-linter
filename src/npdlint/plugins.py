@@ -8,10 +8,10 @@ import sys
 from importlib.metadata import entry_points
 from pathlib import Path
 
-from numpydoc_linter.rules.base import Registry, registry
+from npdlint.rules.base import Registry, registry
 
 #: Entry-point group packaged rule providers advertise themselves under.
-ENTRY_POINT_GROUP = "numpydoc_linter.rules"
+ENTRY_POINT_GROUP = "npdlint.rules"
 
 _loaded: set[str] = set()
 
@@ -105,7 +105,7 @@ def load_path(spec: str, root: Path, target: Registry = registry) -> str:
             path = root / path
         if not path.is_file():
             raise PluginError(f"plugin file not found: {path}")
-        name = f"_numpydoc_linter_plugin_{path.stem}"
+        name = f"_npdlint_plugin_{path.stem}"
         module_spec = importlib.util.spec_from_file_location(name, path)
         if module_spec is None or module_spec.loader is None:
             raise PluginError(f"could not load plugin file: {path}")

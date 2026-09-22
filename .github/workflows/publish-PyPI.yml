@@ -52,7 +52,7 @@ jobs:
 
     environment:
       name: pypi
-      url: https://pypi.org/p/numpydoc-linter
+      url: https://pypi.org/p/npdlint
 
     permissions:
       id-token: write

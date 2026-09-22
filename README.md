@@ -1,4 +1,4 @@
-# numpydoc-linter
+# npdlint
 
 A fast, modular, structurally-aware linter for numpydoc-style docstrings.
 
@@ -38,7 +38,7 @@ This tool keeps numpydoc's checks and error codes, and adds:
 ## Install
 
 ```console
-pip install numpydoc-linter
+pip install npdlint
 ```
 
 ## Usage
@@ -86,22 +86,22 @@ numpydoc it is only consulted when there is no `pyproject.toml`.
 adopting this tool never silently turns on rules a project has not asked for.
 The `PT` and `DS` rules are opt-in.
 
-Anything written in `[tool.numpydoc-linter]` wins over the legacy table, so a
+Anything written in `[tool.npdlint]` wins over the legacy table, so a
 project can migrate one setting at a time. Set `numpydoc-compat = false` to
 ignore the legacy table entirely.
 
 The same three features exist natively, under clearer names:
 
 ```toml
-[tool.numpydoc-linter]
+[tool.npdlint]
 exclude-object-patterns = ['\.__repr__$']   # regex on the object name
 exclude-file-patterns = ['^generated/']     # regex on the path, anchored
 
-[tool.numpydoc-linter.overrides]
+[tool.npdlint.overrides]
 SS05 = ['^Process ', '^Access ']            # regex found in the docstring
 ```
 
-Note that `exclude` in `[tool.numpydoc-linter]` is a gitignore-style glob, not
+Note that `exclude` in `[tool.npdlint]` is a gitignore-style glob, not
 a regular expression. `exclude-file-patterns` is the regex equivalent.
 
 ### What is left in the workflow
@@ -109,7 +109,7 @@ a regular expression. `exclude-file-patterns` is the regex equivalent.
 File selection that used to live in the shell moves into configuration:
 
 ```toml
-[tool.numpydoc-linter]
+[tool.npdlint]
 include = ["mypackage"]
 extend-exclude = ["mypackage/vendored.py"]
 ```
@@ -118,32 +118,37 @@ Then the CI step is one line with no project-specific data in it.
 
 ## Configuration
 
-Everything lives in `pyproject.toml` under `[tool.numpydoc-linter]`.
+Everything lives in `pyproject.toml` under `[tool.npdlint]`. The tool was
+called `numpydoc-linter` to begin with, and `[tool.numpydoc-linter]` is still
+read when no `[tool.npdlint]` table is present, with a warning on stderr
+naming the file. Where both are present the current name wins outright, since
+merging the two would make the effective configuration impossible to read off
+the file.
 
 ```toml
-[tool.numpydoc-linter]
+[tool.npdlint]
 include = ["src"]
 extend-exclude = ["**/tests/**"]
 select = ["ALL"]
 ignore = ["ES01", "SA01", "EX01"]
 
-[tool.numpydoc-linter.per-file-ignores]
+[tool.npdlint.per-file-ignores]
 "**/__init__.py" = ["GL08"]
 
 # Private helpers are not part of the public API, so they need no docstring.
-[[tool.numpydoc-linter.scope]]
+[[tool.npdlint.scope]]
 match = { private = true }
 skip = true
 
 # Properties read as attributes, so document them as "type: summary".
-[[tool.numpydoc-linter.scope]]
+[[tool.npdlint.scope]]
 match = { kind = "property" }
 extend-ignore = ["PR", "RT", "ES01"]
 extend-select = ["PT"]
 property-form = "type-line"
 
 # Dunder methods only need to exist.
-[[tool.numpydoc-linter.scope]]
+[[tool.npdlint.scope]]
 match = { kind = "any-method", dunder = true }
 select = ["GL08"]
 ```
@@ -301,7 +306,7 @@ src/geometry.py:96:19: NQ02 Suppression comment names unknown rule code RT09
 ```
 
 Both are on by default, and both are ordinary rules: `ignore = ["NQ"]` in
-`[tool.numpydoc-linter]`, a `per-file-ignores` entry, or `--ignore NQ` on the
+`[tool.npdlint]`, a `per-file-ignores` entry, or `--ignore NQ` on the
 command line turns them off. They are the only rules that judge the file
 rather than an object in it, so scope blocks do not apply to them.
 
@@ -333,7 +338,7 @@ Replacing a `fd | xargs numpydoc lint` pipeline:
 
 ```yaml
 - uses: actions/setup-python@v5
-- run: pip install numpydoc-linter
+- run: pip install npdlint
 - run: npdlint check --output-format github
 ```
 
@@ -381,7 +386,7 @@ agree, so every difference below is deliberate and pinned down by a test.
    consistent. To keep numpydoc's effective behaviour, skip them:
 
    ```toml
-   [[tool.numpydoc-linter.scope]]
+   [[tool.npdlint.scope]]
    match = { nested = true }
    skip = true
    ```
@@ -407,16 +412,16 @@ numpydoc also failed to parse 4 of those files.
 ## Writing your own rules
 
 Point at a local file, or ship a package that advertises the
-`numpydoc_linter.rules` entry point.
+`npdlint.rules` entry point.
 
 ```toml
-[tool.numpydoc-linter]
+[tool.npdlint]
 plugins = ["tools/doc_rules.py"]
 ```
 
 ```python
-from numpydoc_linter.rules import BaseRule, registry
-from numpydoc_linter.targets import Kind
+from npdlint.rules import BaseRule, registry
+from npdlint.targets import Kind
 
 
 @registry.register
@@ -439,5 +444,5 @@ col, message)` builds the diagnostic. The `NQ` rules are written this way.
 
 ## Licence
 
-BSD 3-Clause. `src/numpydoc_linter/_vendor/docscrape.py` is vendored from
+BSD 3-Clause. `src/npdlint/_vendor/docscrape.py` is vendored from
 numpydoc under the same licence; its copyright notice is kept alongside it.
