@@ -1,0 +1,7 @@
+- id: npdlint
+  name: numpydoc-linter
+  description: Lint numpydoc-style docstrings.
+  entry: npdlint check
+  language: python
+  types: [python]
+  require_serial: false
