@@ -1,0 +1,29 @@
+# Reusable workflow replacing the fd-find + xargs + numpydoc pipeline.
+#
+# The linter discovers its own files and reads its rules from pyproject.toml,
+# so this job takes no inputs beyond the Python version. What used to be
+# workflow inputs (package-dir, extra excludes, the __init__.py exemption)
+# now live in [tool.numpydoc-linter] in the repository being checked.
+name: numpydoc-lint
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        type: string
+        default: "3.12"
+      paths:
+        description: Optional paths to lint, overriding the configured include.
+        type: string
+        default: ""
+
+jobs:
+  numpydoc-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+      - run: pip install numpydoc-linter
+      - run: npdlint check ${{ inputs.paths }} --output-format github --statistics

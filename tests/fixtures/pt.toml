@@ -1,0 +1,2 @@
+select = ["PT", "SS02", "SS03"]
+property-form = "type-line"

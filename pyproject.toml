@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "numpydoc-linter"
+version = "0.1.0"
+description = "A fast, modular, structurally-aware linter for numpydoc-style docstrings."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "BSD-3-Clause"
+keywords = ["numpydoc", "docstring", "lint", "linter", "documentation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Quality Assurance",
+    "Typing :: Typed",
+]
+dependencies = ["pathspec>=0.12"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6", "numpydoc>=1.9"]
+
+[project.scripts]
+npdlint = "numpydoc_linter.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jakefaulkner/numpydoc-linter"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/numpydoc_linter"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "parity: differential tests against the numpydoc reference implementation",
+    "performance: wall-clock budget tests, needs --run-performance",
+]
+
+[tool.ruff]
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/numpydoc_linter/_vendor/*" = ["ALL"]
+"tests/fixtures/*" = ["ALL"]
+
+# Dogfooding: this project lints its own docstrings.
+[tool.numpydoc-linter]
+include = ["src/numpydoc_linter"]
+extend-exclude = ["src/numpydoc_linter/_vendor/**"]
+select = ["ALL"]
+ignore = ["ES01", "SA01", "EX01", "GL08"]
+
+[[tool.numpydoc-linter.scope]]
+match = { private = true }
+skip = true

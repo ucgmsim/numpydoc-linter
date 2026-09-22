@@ -1,0 +1,13 @@
+select = ["GL08"]
+
+[[scope]]
+match = { private = true }
+skip = true
+
+[[scope]]
+match = { overload = true }
+skip = true
+
+[[scope]]
+match = { kind = "property" }
+skip = true
