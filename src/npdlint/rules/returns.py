@@ -8,7 +8,9 @@ from npdlint.diagnostics import Diagnostic
 from npdlint.docstring import check_description
 from npdlint.rules.base import BaseRule, Context, registry
 from npdlint.rules.messages import render
-from npdlint.targets import CALLABLE_KINDS, Target
+from npdlint.rules.properties import OPTION as PROPERTY_FORM_OPTION
+from npdlint.rules.properties import resolve_form
+from npdlint.targets import CALLABLE_KINDS, Kind, Target
 
 
 @registry.register
@@ -19,10 +21,14 @@ class NoReturnsSection(BaseRule):
     name = "no-returns-section"
     summary = "A function that returns a value should document it."
     kinds = CALLABLE_KINDS
+    options = (PROPERTY_FORM_OPTION,)
 
     def check(self, target: Target, ctx: Context) -> Iterable[Diagnostic]:
         """
         Check for a missing Returns section.
+
+        A property whose configured form forbids a Returns section is exempt,
+        since demanding one would contradict PT03.
 
         Parameters
         ----------
@@ -36,6 +42,10 @@ class NoReturnsSection(BaseRule):
         Diagnostic
             One when a return value is undocumented.
         """
+        if target.kind is Kind.PROPERTY:
+            form = resolve_form(ctx.option(PROPERTY_FORM_OPTION))
+            if "Returns" in form.forbidden_sections:
+                return
         doc = target.docstring
         assert doc is not None
         if not doc.returns and target.returns_value:

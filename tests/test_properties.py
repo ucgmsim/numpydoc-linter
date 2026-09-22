@@ -80,6 +80,18 @@ def test_returns_section_is_forbidden_under_type_line(lint):
     assert "PT03" in {d.code for d in found}
 
 
+@pytest.mark.parametrize("form", ["type-line", "summary-only"])
+def test_forms_without_returns_exempt_properties_from_rt01(lint, form):
+    doc = "float: The area." if form == "type-line" else "The area."
+    config = {"select": ["RT01", "PT"], "property-form": form}
+    assert lint(build(doc), config) == []
+
+
+def test_returns_section_form_still_requires_rt01(lint):
+    config = {"select": ["RT01"], "property-form": "returns-section"}
+    assert [d.code for d in lint(build("The area."), config)] == ["RT01"]
+
+
 def test_summary_only_form(lint):
     assert lint(build("The area."), scoped("summary-only")) == []
     found = lint(build("float: The area."), scoped("summary-only"))
