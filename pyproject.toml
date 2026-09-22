@@ -11,12 +11,12 @@ requires-python = ">=3.11"
 license = "BSD-3-Clause"
 keywords = ["numpydoc", "docstring", "lint", "linter", "documentation"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Environment :: Console",
-    "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3 :: Only",
-    "Topic :: Software Development :: Quality Assurance",
-    "Typing :: Typed",
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Software Development :: Quality Assurance",
+  "Typing :: Typed",
 ]
 dependencies = ["pathspec>=0.12"]
 
@@ -27,7 +27,7 @@ dev = ["pytest>=8", "ruff>=0.6", "numpydoc>=1.9"]
 npdlint = "numpydoc_linter.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/jakefaulkner/numpydoc-linter"
+Homepage = "https://github.com/ucgmsim/numpydoc-linter"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/numpydoc_linter"]
@@ -35,8 +35,8 @@ packages = ["src/numpydoc_linter"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = [
-    "parity: differential tests against the numpydoc reference implementation",
-    "performance: wall-clock budget tests, needs --run-performance",
+  "parity: differential tests against the numpydoc reference implementation",
+  "performance: wall-clock budget tests, needs --run-performance",
 ]
 
 [tool.ruff]
